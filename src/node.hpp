@@ -25,7 +25,6 @@ namespace nodespace{
         
     public:
         node(){
-            srand(clock());
             collision_counter = 0;
             set_R();
             set_backoff_counter();
@@ -41,6 +40,7 @@ namespace nodespace{
 
         int get_backoff_counter(){ return backoff_counter; }
         void decrease_backoff_counter(){ backoff_counter--; }
+        void increase_backoff_counter(){ backoff_counter++; }
         
         int get_collision_counter(){ return collision_counter; }
         void increase_collision_counter(){ collision_counter++; }
