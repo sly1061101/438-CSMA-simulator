@@ -7,18 +7,54 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "node.hpp"
 #include "file_io.hpp"
 #include <vector>
+#include <fstream>
+#include <math.h>
+#include <iostream>
 
 //#define __DEBUG__
 
+float avg ( std::vector<int>& v )
+{
+    float return_value = 0.0;
+    int n = (int)v.size();
+    
+    for ( int i=0; i < n; i++)
+    {
+        return_value += v[i];
+    }
+    
+    return ( return_value / (float)n);
+}
+//****************End of average funtion****************
+
+
+//Function for variance
+float variance ( std::vector<int> & v , float mean )
+{
+    float sum = 0.0;
+    float temp =0.0;
+    
+    for ( int j =0; j <= v.size()-1; j++)
+    {
+        temp = pow(((float)v[j] - mean),2);
+        sum += temp;
+    }
+    
+    return sum/(v.size());
+}
+
 
 int main(){
+    std::ofstream ofs;
+    ofs.open ("/Users/ziyangliu/Documents/git/438-CSMA-simulator/output.txt", std::ofstream::out | std::ofstream::app);
     srand(clock());
     int N,L,M,T;
     std::vector<int> R_list;
-    read_file("input.txt",N,L,R_list,M,T);
+    read_file("/Users/ziyangliu/Documents/git/438-CSMA-simulator/input.txt",N,L,R_list,M,T);
     
     nodespace::node::set_channel_occupied_status(false);
     nodespace::node::set_M(M);
@@ -45,8 +81,9 @@ int main(){
 
     for(clk = 0; clk<T; ++clk){
         #ifdef __DEBUG__
-        for(auto &n:allnode)
+        for(auto &n:allnode){
             printf("%d\t",n.get_backoff_counter());
+        }
         #endif
         //if there is no node transmitting
         if(nodespace::node::get_channel_occupied_status() == false){
@@ -179,5 +216,9 @@ int main(){
         #endif
     }
     printf("utilization:%f idle:%f collision:%d\n",(float)total_used_time/T, (float)total_unused_time/T,total_collision_time);
+    ofs << "utilization:"<<100*(float)total_used_time/T<<"% idle:"<<100*(float)total_unused_time/T<<"% collision:"<<(float)total_collision_time<<std::endl;
+    ofs<<"Variance in number of successful transmissions:"<<variance(num_succ_trans, avg(num_succ_trans))<<std::endl;
+    ofs<<"Variance in number of collisions:"<<variance(num_collisions, avg(num_collisions))<<std::endl;
+    ofs.close();
     return 0;
 }
