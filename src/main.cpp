@@ -14,11 +14,16 @@
 //#define __DEBUG__
 
 
-int main(){
+int main(int argc, char *argv[]){
+    if(argc != 2){
+        printf("Format: csma input.txt\n");
+        return 1;
+    }
+
     srand(clock());
     int N,L,M,T;
     std::vector<int> R_list;
-    read_file("input.txt",N,L,R_list,M,T);
+    read_file(argv[1],N,L,R_list,M,T);
     
     nodespace::node::set_channel_occupied_status(false);
     nodespace::node::set_M(M);
@@ -178,6 +183,6 @@ int main(){
         printf("\n");
         #endif
     }
-    printf("utilization:%f idle:%f collision:%d\n",(float)total_used_time/T, (float)total_unused_time/T,total_collision_time);
+    //printf("utilization:%f idle:%f collision:%d\n",(float)total_used_time/T, (float)total_unused_time/T,total_collision_time);
     return 0;
 }
