@@ -48,13 +48,19 @@ float variance ( std::vector<int> & v , float mean )
 }
 
 
-int main(){
+int main(int argc, char *argv[]){
+    if(argc != 2){
+        printf("Format: csma input.txt\n");
+        return 1;
+    }
+    
     std::ofstream ofs;
-    ofs.open ("/Users/ziyangliu/Documents/git/438-CSMA-simulator/output.txt", std::ofstream::out | std::ofstream::app);
+    ofs.open ("output.txt", std::ofstream::out | std::ofstream::app);
+
     srand(clock());
     int N,L,M,T;
     std::vector<int> R_list;
-    read_file("/Users/ziyangliu/Documents/git/438-CSMA-simulator/input.txt",N,L,R_list,M,T);
+    read_file(argv[1],N,L,R_list,M,T);
     
     nodespace::node::set_channel_occupied_status(false);
     nodespace::node::set_M(M);
@@ -215,10 +221,10 @@ int main(){
         printf("\n");
         #endif
     }
-    printf("utilization:%f idle:%f collision:%d\n",(float)total_used_time/T, (float)total_unused_time/T,total_collision_time);
     ofs << "utilization:"<<100*(float)total_used_time/T<<"% idle:"<<100*(float)total_unused_time/T<<"% collision:"<<(float)total_collision_time<<std::endl;
     ofs<<"Variance in number of successful transmissions:"<<variance(num_succ_trans, avg(num_succ_trans))<<std::endl;
     ofs<<"Variance in number of collisions:"<<variance(num_collisions, avg(num_collisions))<<std::endl;
     ofs.close();
+    //printf("utilization:%f idle:%f collision:%d\n",(float)total_used_time/T, (float)total_unused_time/T,total_collision_time);
     return 0;
 }
