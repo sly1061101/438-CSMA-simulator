@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
     }
     
     std::ofstream ofs;
-    ofs.open ("output.txt", std::ofstream::out | std::ofstream::app);
+    ofs.open ("output.txt", std::ofstream::out | std::ofstream::trunc);
 
     srand(clock());
     int N,L,M,T;
