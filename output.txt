@@ -1,3 +1,3 @@
-utilization:89.424% idle:6.716% collision:1930
-Variance in number of successful transmissions:272.086
-Variance in number of collisions:134.56
+utilization:89.064% idle:6.948% collision:1994
+Variance in number of successful transmissions:239.434
+Variance in number of collisions:184.598
